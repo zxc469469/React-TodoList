@@ -8,7 +8,15 @@ type action = {
         },
         count:number
     }
-}
+}|
+{type:"DELETE",payload:{
+    TodoList:{
+        name:string,
+        key:number
+    },
+    key:number,
+    count:number
+}}
 
 export interface initState {
     TodoList:{name:string,key:number}[],
@@ -23,20 +31,24 @@ const initState = {
 const rootReducer = (state = initState,action:action):initState => {
     switch (action.type) {
         case "ADD":{
-            console.log("ADD!")
-            if(state.TodoList[0].name===""){
-                state.TodoList[0].name=action.payload.TodoList.name;
-               state.TodoList[0].key=action.payload.TodoList.key;
-            }
             return Object.assign({}, state, {
                 TodoList: state.TodoList.concat({
                     name:action.payload.TodoList.name,
-                    key:state.count+1
+                    key:action.payload.TodoList.key
                 }),
-                count:state.count+1
+                count:state.TodoList.length
             })
         }
-        
+        case "DELETE":{
+            const cloneTodo = state.TodoList.slice()
+            console.log("delete:",state.TodoList,action.payload.key);
+            console.log("after",cloneTodo.splice(action.payload.key,1));
+            return {
+                ...state,
+                TodoList:cloneTodo,
+                count:state.TodoList.length
+            }
+        }
         default:
             return state;
         }

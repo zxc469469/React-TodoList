@@ -12,13 +12,13 @@ export default function TodoInput() {
 
     const todoList = useSelector((state:initState )=> state.TodoList);
     const dispatch = useDispatch();
-    const [state, setState] = useState({name:"",key:0})
+    const [state, setState] = useState({name:"",key:1})
     console.log(todoList);
     const addTodo = () => {
         if(state.name){
             dispatch({ type: 'ADD', payload: { TodoList: {name:state.name,key:state.key}
             ,count:state.key} })
-            setState({key:state.key,name:""})
+            setState({key:state.key+1,name:""})
         }
     }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import {initState} from '../store/reducer'
 
 
@@ -9,16 +9,21 @@ type state={
 }
 
 export default function TodoList() {
-    const TodoList = useSelector((state:initState) => state.TodoList)
-    console.log("store:",TodoList);
+    const TodoList = useSelector((state:initState) => state.TodoList);
+    const dispatch = useDispatch();
+
+    const Delete = (key:number) => {
+            dispatch({ type: 'DELETE', payload: {TodoList: TodoList,key:key}})
+    }
     return (
         <div>
-            {TodoList.map((ele:state):any => {
-                if(ele.key>0)
+            {TodoList.map((ele:state,i) => {
+                
                 return (
                     <p key={ele.key} data-testid={ele.key}>
                        
                 第{ele.key}項：{ele.name}
+                <button onClick={()=>{Delete(i)}}>刪除</button>
                     </p>
                 )
             })}
