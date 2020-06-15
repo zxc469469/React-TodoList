@@ -1,6 +1,8 @@
 import React from 'react';
 import TodoInput from './components/TodoInput';
-import Todolist from './components/TodoList';
+import TodoList from './components/TodoList';
+import { Provider } from 'react-redux';
+import store from './store/store';
 import './App.css';
 
 function App() {
@@ -9,8 +11,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <TodoInput/>
-        <Todolist/>
+        <Provider store = {store}>
+          {"ToDolist"}
+          <TodoInput/>
+          <TodoList/>
+        </Provider>
       </header>
     </div>
   );

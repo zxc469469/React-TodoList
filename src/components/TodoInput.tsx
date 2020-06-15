@@ -1,46 +1,35 @@
-import React ,{useReducer,useState, useEffect}from 'react';
-import reducer from '../store/store';
+import React ,{useState}from 'react';
+import {initState} from '../store/reducer'
+import { useSelector, useDispatch } from 'react-redux';
+
 
 type state={
     name:string,
     key:number
 }
-const initState ={
-    TodoList:[{name:"",key:0}],
-    count:0,
-}
 
 export default function TodoInput() {
-    const [state,dispatch] = useReducer(reducer,initState);
-    
-    const [listName, setListName] = useState('')
-    
+
+    const todoList = useSelector((state:initState )=> state.TodoList);
+    const dispatch = useDispatch();
+    const [state, setState] = useState({name:"",key:0})
+    console.log(todoList);
     const addTodo = () => {
-        if(listName){
-            dispatch({ type: 'ADD', payload: { TodoList: {name:listName,key:state.count}
-            ,count:state.count} })
-           setListName('')
+        if(state.name){
+            dispatch({ type: 'ADD', payload: { TodoList: {name:state.name,key:state.key}
+            ,count:state.key} })
+            setState({key:state.key,name:""})
         }
     }
 
-    useEffect(()=>{
-        console.log(state.TodoList)
-    },[state])
-    
+   
     return (
         <div>
-            <input  type="text" value={listName}
-            onChange={e => setListName(e.target.value)}
+            <input data-testid="Input" type="text" value={state.name}
+            onChange={e => setState({key:state.key,name:e.target.value})}
             />
             <button onClick={addTodo}>新增</button>
-            {state.TodoList.map((ele:state) => {
-                return (
-                    <p key={ele.key} >
-                       
-                第{ele.key}項：{ele.name}
-                    </p>
-                )
-            })}
+            
         </div>
     )
 }

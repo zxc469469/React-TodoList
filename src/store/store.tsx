@@ -1,38 +1,8 @@
-type action = {
-    type:"ADD",
-    payload:{
-        TodoList:{
-            name:string,
-            key:number
-        },
-        count:number
-    }
-}
+import { createStore } from 'redux';
+import rootReducer from './reducer';
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 
+const store = createStore(rootReducer,composeWithDevTools());
 
-interface initState {
-    TodoList:{name:string,key:number}[],
-    count:number;
-}
-
-const reducer = (state:initState,action:action):initState => {
-    switch (action.type) {
-        case "ADD":{
-            
-            return Object.assign({}, state, {
-                TodoList: state.TodoList.concat({
-                    name:action.payload.TodoList.name,
-                    key:state.count+1
-                    }),
-                count:state.count+1
-              })
-        }
-            
-    
-        default:
-            return state;
-    }
-}
-
-export default reducer;
+export default store;
