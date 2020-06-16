@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO  } from '../constants/index';
+import { ADD_TODO, DELETE_TODO ,FINISHED_TODO } from '../constants/index';
 
 
 export interface AddTodoAction {
@@ -17,13 +17,16 @@ export interface AddTodoAction {
 export interface  DeleteTodoAction{
     type: DELETE_TODO;
     payload: {
-      TodoList: {
-        name: string;
-        key: number;
-      };
       toDeleteKey: number;
-      count: number;
     };
   }
 
-  export type TodoAction = AddTodoAction |  DeleteTodoAction ;
+export interface FinishTodoAction{
+  type: FINISHED_TODO;
+    payload: {
+      toDeleteKey: number;
+      count: number;
+    };
+}
+
+  export type TodoAction = AddTodoAction |  DeleteTodoAction|FinishTodoAction ;

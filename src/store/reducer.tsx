@@ -1,4 +1,4 @@
-import { ADD_TODO , DELETE_TODO  } from '../store/constants/index';
+import { ADD_TODO , DELETE_TODO ,FINISHED_TODO } from '../store/constants/index';
 import { TodoAction } from '../store/actions/index';
 
 export interface initState {
@@ -32,7 +32,9 @@ const rootReducer = (state = initState, action: TodoAction): initState => {
         count: state.TodoList.length,
       };
     }
-   
+   case FINISHED_TODO:{
+     return state
+   }
     default:
       return state;
   }

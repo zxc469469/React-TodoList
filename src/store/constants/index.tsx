@@ -1,8 +1,8 @@
 export const ADD_TODO = "ADD_TODO";
 export type ADD_TODO = typeof ADD_TODO;
 
-export const TOGGLE_TODO = "TOGGLE_TODO";
-export type TOGGLE_TODO = typeof TOGGLE_TODO;
+export const FINISHED_TODO = "FINISHED_TODO";
+export type FINISHED_TODO = typeof FINISHED_TODO;
 
 export const EDIT_TODO = "EDIT_TODO";
 export type EDIT_TODO = typeof EDIT_TODO;
