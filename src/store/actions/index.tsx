@@ -7,9 +7,7 @@ export interface AddTodoAction {
           TodoList: {
             name: string;
             key: number;
-            finished: boolean;
           };
-          count: number;
         };
 }
     
@@ -24,8 +22,7 @@ export interface  DeleteTodoAction{
 export interface FinishTodoAction{
   type: FINISHED_TODO;
     payload: {
-      toDeleteKey: number;
-      count: number;
+      toFinishKey: number;
     };
 }
 
