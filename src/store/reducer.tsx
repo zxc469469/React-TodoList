@@ -29,12 +29,13 @@ const rootReducer = (state = initState, action: TodoAction): initState => {
       return {
         ...state,
         TodoList: cloneTodo,
-        count: state.TodoList.length,
+        count: cloneTodo.length - 1,
       };
     }
     case FINISHED_TODO: {
       const cloneTodo = state.TodoList.slice();
-      cloneTodo[action.payload.toFinishKey].finished=true;
+      cloneTodo[action.payload.toFinishKey].finished =
+      ! cloneTodo[action.payload.toFinishKey].finished;
       return {
         ...state,
         TodoList:cloneTodo,
