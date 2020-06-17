@@ -1,27 +1,33 @@
 import React from 'react';
 import { render,fireEvent, getByTestId,cleanup } from '@testing-library/react';
-import { toBeInTheDocument } from '@testing-library/jest-dom';
 import reducer from '../store/reducer';
+import {AddTodoAction}from '../store/actions/index'
+import {ADD_TODO}from '../store/constants/index'
+import { count } from 'console';
 
-expect.extend({toBeInTheDocument});
 
-const initState ={
-    TodoList:[{name:"",key:0}],
-    count:0,
+const testState ={
+    TodoList: [{ name: "first", key: 0, finished: false }],
+    count: 0,
 }
-type action = {
-    type:"ADD",
+const expectState={
+    TodoList: [{name: "first", key: 0, finished: false},
+        { name: "two", key: 1, finished: false }],
+    count: 1,
+}
+
+let addAction:AddTodoAction ={
+    type:ADD_TODO,
     payload:{
         TodoList:{
-            name:string,
-            key:number
+            name:"two",
+            key:1,
         },
-        count:number
     }
 }
+test('Dispatch ADD',()=>{
+    console.log(reducer(testState,addAction));
+    expect(reducer(testState,addAction)).toStrictEqual(expectState)
 
-test('reducer',()=>{
-    reducer(initState,{type:"ADD",payload:{TodoList:{name:"init",key:1},count:1}})
-    
-    expect(reducer(initState,{type:"ADD",payload:{TodoList:{name:"init",key:1},count:1}})).toBe()
 })
+
