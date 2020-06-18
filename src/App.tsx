@@ -1,33 +1,51 @@
-import React,{useEffect,useState} from 'react';
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
+import React, { useEffect, useState } from "react";
+import ToDoInput from "./components/ToDoInput";
+import ToDoList from "./components/ToDoList";
 import { useSelector } from "react-redux";
 import { initState } from "./store/reducer";
-import './App.css';
+import styled from "@emotion/styled";
+import "./App.css";
 
+const ToDoTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+`;
+const InputContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 300px;
+`;
 function App() {
-  const ToDoListCount= useSelector((state: initState) => state.count);
-  const allTodoList= useSelector((state: initState) => state.TodoList);
-  const [remainTodo,setRemainTodo] = useState(0)
-  let isFinishTodoCount = 0;
-  
+  const ToDoListCount = useSelector((state: initState) => state.count);
+  const allToDoList = useSelector((state: initState) => state.ToDoList);
+  const [remainToDo, setRemainToDo] = useState(0);
+  const [finishedCount, setfinishedCount] = useState(0);
+  let isFinishToDoCount = 0;
 
   useEffect(() => {
-    isFinishTodoCount= allTodoList.filter(ele=>{return ele.finished===true}).length
-    setRemainTodo(ToDoListCount - isFinishTodoCount)
-
-  }, [allTodoList])
+    isFinishToDoCount = allToDoList.filter((ele) => {
+      return ele.finished === true;
+    }).length;
+    setfinishedCount(isFinishToDoCount);
+    console.log(isFinishToDoCount);
+    setRemainToDo(ToDoListCount - isFinishToDoCount);
+  }, [allToDoList]);
   return (
     <div className="App">
-      <header className="App-header">
+      <InputContainer>
+        <ToDoTitle>
           {"ToDoList"}
-          {
-          remainTodo>0 ? `剩餘${remainTodo}項`:"" 
-          }
-       
-          <TodoInput/>
-          <TodoList/>
-      </header>
+          {remainToDo > 0 ? `剩餘${remainToDo}項` : ""}
+          {`已完成${finishedCount}`}
+        </ToDoTitle>
+        <ToDoInput />
+      </InputContainer>
+
+      <ToDoList />
     </div>
   );
 }

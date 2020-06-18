@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import {OutlinedInput , Button} from '@material-ui/core';
 
 
-const TodoInputContainer = styled.div`
+const ToDoInputContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
@@ -14,28 +14,28 @@ const TodoInputContainer = styled.div`
   height: 100px;
   margin-bottom: 50px;
 `;
-const TodoListInput = styled(OutlinedInput)`
+const ToDoListInput = styled(OutlinedInput)`
   width: 30%;
   min-width: 200px;
   height: 40px;
   margin-bottom: 20px;
   box-sizing: border-box;
 `;
-const NewTodoBtn = styled(Button)`
+const NewToDoBtn = styled(Button)`
   width: 30%;
   min-width: 200px;
   height: 40px;
 `;
 
-export default function TodoInput() {
+export default function ToDoInput() {
   const dispatch = useDispatch();
   const [state, setState] = useState({ name: "", key: 1 });
-  const addTodo = () => {
+  const addToDo = () => {
     if (state.name) {
       dispatch({
         type: ADD_TODO,
         payload: {
-          TodoList: { name: state.name, key: state.key },
+          ToDoList: { name: state.name, key: state.key },
         },
       });
       setState({ key: state.key + 1, name: "" });
@@ -43,16 +43,16 @@ export default function TodoInput() {
   };
 
   return (
-    <TodoInputContainer>
-      <TodoListInput
+    <ToDoInputContainer>
+      <ToDoListInput
       
         data-testid="Input"
         type="text"
         value={state.name}
         onChange={(e) => setState({ key: state.key, name: e.target.value })}
       />
-      <NewTodoBtn variant="contained" color="primary"
-       onClick={addTodo}>新增</NewTodoBtn>
-    </TodoInputContainer>
+      <NewToDoBtn variant="contained" color="primary"
+       onClick={addToDo}>新增ToDo</NewToDoBtn>
+    </ToDoInputContainer>
   );
 }

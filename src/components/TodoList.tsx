@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import {css} from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { initState } from "../store/reducer";
 import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
@@ -29,34 +28,36 @@ const device = {
   desktopL: `(max-width: ${size.desktop})`
 };
 
-const TodoListContainer = styled.div`
+const ToDoListContainer = styled.div`
   display: grid;
-  grid-template: 1fr /1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(50px, auto);
 
   @media ${device.tablet}{
     grid-template: 1fr /1fr 1fr ;
   }
   width: 100%;
-  min-height: 400px;
+  min-height: 200px;
   padding:50px;
   box-sizing:border-box;
 `;
 
-const TodoCard = styled(Card)`
+const ToDoCard = styled(Card)`
   display: flex;
   min-height: 200px;
   margin: 20px 10px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   background-color: #fff;
   padding-bottom: 30px;
   color:#2c2c2c;
+  
 `;
-type TodoTextProp={
+type ToDoTextProp={
   isfinished:Boolean;
 }
-const TodoText = styled.div<TodoTextProp>`
+const ToDoText = styled.div<ToDoTextProp>`
   display: flex;
   height: 100%;
   width: 100%;
@@ -67,9 +68,9 @@ const TodoText = styled.div<TodoTextProp>`
   `;
 
 
-const TodoTextTitle = styled("div")``
+const ToDoTextTitle = styled("div")``
 
-const TodoDeleteBtn = styled(Button)`
+const ToDoDeleteBtn = styled(Button)`
   width: 50%;
   margin: 0 auto;
   border: 1px solid #1c1c1c;
@@ -78,8 +79,8 @@ const TodoDeleteBtn = styled(Button)`
   background:#fff;
 `;
 
-export default function TodoList() {
-  const TodoList = useSelector((state: initState) => state.TodoList);
+export default function DisplayToDoList() {
+  const ToDoList = useSelector((state: initState) => state.ToDoList);
   const dispatch = useDispatch();
 
   const Delete = (toDeleteKey: number) => {
@@ -93,22 +94,22 @@ export default function TodoList() {
 
 
   return (
-    <TodoListContainer>
-      {TodoList.map((ele: { name: string; key: number; finished:boolean }, i) => {
+    <ToDoListContainer>
+      {ToDoList.map((ele: { name: string; key: number; finished:boolean }, i) => {
         if(i>=1)
         return (
-          <TodoCard key={ele.key} > 
-            <TodoTextTitle>第{ele.key}項：</TodoTextTitle>
-            <TodoText  isfinished={ele.finished}
+          <ToDoCard key={ele.key} > 
+            <ToDoTextTitle>第{i}項：</ToDoTextTitle>
+            <ToDoText  isfinished={ele.finished}
               onClick={() => {
-                finished(ele.key);
+                finished(i);
               }}
               data-testid={ele.key}
               
             >
               {ele.name}
-            </TodoText>
-            <TodoDeleteBtn
+            </ToDoText>
+            <ToDoDeleteBtn
             variant="contained"
             color="secondary"
             startIcon={<DeleteIcon />}
@@ -117,10 +118,10 @@ export default function TodoList() {
               }}
             >
               刪除
-            </TodoDeleteBtn>
-          </TodoCard>
+            </ToDoDeleteBtn>
+          </ToDoCard>
         );
       })}
-    </TodoListContainer>
+    </ToDoListContainer>
   );
 }

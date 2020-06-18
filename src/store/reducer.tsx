@@ -1,44 +1,44 @@
 import { ADD_TODO, DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
-import { TodoAction } from "../store/actions/index";
+import { ToDoAction } from "../store/actions/index";
 
 export interface initState {
-  TodoList: { name: string; key: number; finished: boolean }[];
+  ToDoList: { name: string; key: number; finished: boolean }[];
   count: number;
 }
 
 const initState = {
-  TodoList: [{ name: "first", key: 0, finished: false }],
+  ToDoList: [{ name: "first", key: 0, finished: false }],
   count: 0,
 };
 
-const rootReducer = (state = initState, action: TodoAction): initState => {
+const rootReducer = (state = initState, action: ToDoAction): initState => {
   switch (action.type) {
     case ADD_TODO: {
       return Object.assign({}, state, {
-        TodoList: state.TodoList.concat({
-          name: action.payload.TodoList.name,
-          key: action.payload.TodoList.key,
+        ToDoList: state.ToDoList.concat({
+          name: action.payload.ToDoList.name,
+          key: action.payload.ToDoList.key,
           finished: false,
         }),
-        count: state.TodoList.length,
+        count: state.ToDoList.length,
       });
     }
     case DELETE_TODO: {
-      const cloneTodo = state.TodoList.slice();
-      cloneTodo.splice(action.payload.toDeleteKey, 1);
+      const cloneToDo = state.ToDoList.slice();
+      cloneToDo.splice(action.payload.toDeleteKey, 1);
       return {
         ...state,
-        TodoList: cloneTodo,
-        count: cloneTodo.length - 1,
+        ToDoList: cloneToDo,
+        count: cloneToDo.length - 1,
       };
     }
     case FINISHED_TODO: {
-      const cloneTodo = state.TodoList.slice();
-      cloneTodo[action.payload.toFinishKey].finished =
-      ! cloneTodo[action.payload.toFinishKey].finished;
+      const cloneToDo = state.ToDoList.slice();
+      cloneToDo[action.payload.toFinishKey].finished =
+      ! cloneToDo[action.payload.toFinishKey].finished;
       return {
         ...state,
-        TodoList:cloneTodo,
+        ToDoList:cloneToDo,
       };
     }
     default:
