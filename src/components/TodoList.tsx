@@ -1,47 +1,75 @@
-import React,{useEffect} from "react";
+import React from "react";
 import styled from "@emotion/styled";
+import {css} from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { initState } from "../store/reducer";
 import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
+import {Card ,Button} from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+
+const size = {
+  mobileS: '320px',
+  mobileM: '375px',
+  mobileL: '425px',
+  tablet: '768px',
+  laptop: '1024px',
+  laptopL: '1440px',
+  desktop: '2560px'
+}
+
+const device = {
+  mobileS: `(max-width: ${size.mobileS})`,
+  mobileM: `(max-width: ${size.mobileM})`,
+  mobileL: `(max-width: ${size.mobileL})`,
+  tablet: `(max-width: ${size.tablet})`,
+  laptop: `(max-width: ${size.laptop})`,
+  laptopL: `(max-width: ${size.laptopL})`,
+  desktop: `(max-width: ${size.desktop})`,
+  desktopL: `(max-width: ${size.desktop})`
+};
 
 const TodoListContainer = styled.div`
   display: grid;
   grid-template: 1fr /1fr 1fr 1fr;
-  width: 100vw;
+
+  @media ${device.tablet}{
+    grid-template: 1fr /1fr 1fr ;
+  }
+  width: 100%;
   min-height: 400px;
   padding:50px;
   box-sizing:border-box;
 `;
 
-const TodoCard = styled.div`
+const TodoCard = styled(Card)`
   display: flex;
-  height: 200px;
+  min-height: 200px;
   margin: 20px 10px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   background-color: #fff;
-  border-radius: 4px;
   padding-bottom: 30px;
   color:#2c2c2c;
-  box-shadow: 5px 9px 8px rgba(20, 20, 20, 0.7);
 `;
 type TodoTextProp={
   isfinished:Boolean;
 }
 const TodoText = styled.div<TodoTextProp>`
   display: flex;
-  height: 175px;
+  height: 100%;
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-  text-decoration: ${(props)=>props.isfinished ? 'line-through': 'none'}
+  text-decoration: ${(props)=>props.isfinished ? 'line-through': 'none'};
+  word-break: break-all;
   `;
 
 
 const TodoTextTitle = styled("div")``
 
-const TodoDeleteBtn = styled.button`
+const TodoDeleteBtn = styled(Button)`
   width: 50%;
   margin: 0 auto;
   border: 1px solid #1c1c1c;
@@ -81,6 +109,9 @@ export default function TodoList() {
               {ele.name}
             </TodoText>
             <TodoDeleteBtn
+            variant="contained"
+            color="secondary"
+            startIcon={<DeleteIcon />}
               onClick={() => {
                 Delete(i);
               }}
