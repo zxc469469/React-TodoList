@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useSelector, useDispatch } from "react-redux";
-import { initState } from "../store/reducer";
+import { rootState } from "../store/reducers/index";
 import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
 import {Card ,Button} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -80,9 +80,8 @@ const ToDoDeleteBtn = styled(Button)`
 `;
 
 export default function DisplayToDoList() {
-  const ToDoList = useSelector((state: initState) => state.ToDoList);
+  const ToDoList = useSelector((state: rootState) => state.ToDoList.ToDoList);
   const dispatch = useDispatch();
-
   const Delete = (toDeleteKey: number) => {
     dispatch({ type: DELETE_TODO, payload: { toDeleteKey: toDeleteKey } });
   };
@@ -91,12 +90,14 @@ export default function DisplayToDoList() {
     dispatch({ type: FINISHED_TODO, payload: { toFinishKey: toFinishKey } });
   };
   
+  
 
 
   return (
     <ToDoListContainer>
+      {  console.log(ToDoList)}
       {ToDoList.map((ele: { name: string; key: number; finished:boolean }, i) => {
-        if(i>=1)
+        if(i>=1 && ele.finished === false)
         return (
           <ToDoCard key={ele.key} > 
             <ToDoTextTitle>第{i}項：</ToDoTextTitle>
@@ -105,7 +106,7 @@ export default function DisplayToDoList() {
                 finished(i);
               }}
               data-testid={ele.key}
-              
+            
             >
               {ele.name}
             </ToDoText>

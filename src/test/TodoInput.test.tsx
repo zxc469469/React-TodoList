@@ -3,7 +3,7 @@ import { render,fireEvent, getByTestId } from '@testing-library/react';
 import { toBeInTheDocument } from '@testing-library/jest-dom';
 import ToDoListInput from '../components/ToDoInput';
 import ToDoList from '../components/ToDoList';
-import reducer from '../store/reducer';
+import reducer from '../store/reducers/ToDoReducer';
 import { Provider } from 'react-redux';
 import store from '../store/store';
 

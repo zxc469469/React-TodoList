@@ -1,5 +1,5 @@
-import { ADD_TODO, DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
-import { ToDoAction } from "../store/actions/index";
+import { ADD_TODO, DELETE_TODO, FINISHED_TODO } from "../constants/index";
+import { ToDoAction } from "../actions/index";
 
 export interface initState {
   ToDoList: { name: string; key: number; finished: boolean }[];
@@ -11,7 +11,7 @@ const initState = {
   count: 0,
 };
 
-const rootReducer = (state = initState, action: ToDoAction): initState => {
+const ToDoReducer = (state = initState, action: ToDoAction): initState => {
   switch (action.type) {
     case ADD_TODO: {
       return Object.assign({}, state, {
@@ -46,4 +46,6 @@ const rootReducer = (state = initState, action: ToDoAction): initState => {
   }
 };
 
-export default rootReducer;
+
+
+export default ToDoReducer;

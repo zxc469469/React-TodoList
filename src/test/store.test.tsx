@@ -1,6 +1,6 @@
 import React from 'react';
 import { render,fireEvent, getByTestId,cleanup } from '@testing-library/react';
-import reducer from '../store/reducer';
+import reducer from '../store/reducers/ToDoReducer';
 import {AddToDoAction}from '../store/actions/index'
 import {ADD_TODO}from '../store/constants/index'
 import { count } from 'console';

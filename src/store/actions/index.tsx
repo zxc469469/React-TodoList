@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO ,FINISHED_TODO } from '../constants/index';
+import { ADD_TODO, DELETE_TODO ,FINISHED_TODO ,FILTER_FINISHED_TODO,FILTER_UNFINISHED_TODO} from '../constants/index';
 
 
 export interface AddToDoAction {
@@ -11,7 +11,6 @@ export interface AddToDoAction {
         };
 }
     
-
 export interface  DeleteToDoAction{
     type: DELETE_TODO;
     payload: {
@@ -25,5 +24,20 @@ export interface FinishToDoAction{
       toFinishKey: number;
     };
 }
+export interface FilterFinishAction{
+  type: FILTER_FINISHED_TODO;
+    payload: {
+      filterType: string;
+    };
+}
 
-  export type ToDoAction = AddToDoAction |  DeleteToDoAction|FinishToDoAction ;
+export interface FilterUnfinishedAction{
+  type: FILTER_UNFINISHED_TODO;
+    payload: {
+      filterType: string;
+    };
+}
+
+
+  export type ToDoAction = AddToDoAction |  DeleteToDoAction | FinishToDoAction ;
+  export type FilterAction = FilterFinishAction | FilterUnfinishedAction;

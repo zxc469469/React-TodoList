@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ToDoInput from "./components/ToDoInput";
 import ToDoList from "./components/ToDoList";
+import ToDoFilter from "./components/ToDoFilter";
 import { useSelector } from "react-redux";
-import { initState } from "./store/reducer";
+import { initState } from "./store/reducers/ToDoReducer";
+import { rootState } from "./store/reducers/index";
 import styled from "@emotion/styled";
 import "./App.css";
 
@@ -20,17 +22,17 @@ const InputContainer = styled.div`
   height: 300px;
 `;
 function App() {
-  const ToDoListCount = useSelector((state: initState) => state.count);
-  const allToDoList = useSelector((state: initState) => state.ToDoList);
+  const ToDoListCount = useSelector((state: rootState) => state.ToDoList).count;
+  const allToDoList = useSelector((state: rootState) => state.ToDoList).ToDoList;
   const [remainToDo, setRemainToDo] = useState(0);
-  const [finishedCount, setfinishedCount] = useState(0);
+  const [finishedCount, setFinishedCount] = useState(0);
   let isFinishToDoCount = 0;
 
   useEffect(() => {
     isFinishToDoCount = allToDoList.filter((ele) => {
       return ele.finished === true;
     }).length;
-    setfinishedCount(isFinishToDoCount);
+    setFinishedCount(isFinishToDoCount);
     console.log(isFinishToDoCount);
     setRemainToDo(ToDoListCount - isFinishToDoCount);
   }, [allToDoList]);
@@ -44,6 +46,7 @@ function App() {
         </ToDoTitle>
         <ToDoInput />
       </InputContainer>
+        <ToDoFilter />
 
       <ToDoList />
     </div>

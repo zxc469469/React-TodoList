@@ -21,6 +21,7 @@ const ToDoListInput = styled(OutlinedInput)`
   margin-bottom: 20px;
   box-sizing: border-box;
 `;
+
 const NewToDoBtn = styled(Button)`
   width: 30%;
   min-width: 200px;
