@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { Select } from "@material-ui/core";
 import {
   FILTER_FINISHED_TODO,
   FILTER_UNFINISHED_TODO,
+  FILTER_ALL_TODO,
 } from "../store/constants/index";
-
 
 const FilterSelect = styled(Select)`
   width: 30%;
   min-width: 200px;
   height: 40px;
 `;
+
+const optionMap = [
+  { value: FILTER_UNFINISHED_TODO, text: "未完成ToDoList" },
+  { value: FILTER_FINISHED_TODO, text: "完成ToDoList" },
+  { value: FILTER_ALL_TODO, text: "全部ToDoList" },
+];
 
 export default function ToDoFilter() {
   const [filterType, setFilterType] = useState(FILTER_UNFINISHED_TODO);
@@ -28,8 +34,9 @@ export default function ToDoFilter() {
   return (
     <>
       <FilterSelect value={filterType} onChange={handleFilterSelect}>
-        <option value={FILTER_UNFINISHED_TODO}>顯示未完成</option>
-        <option value={FILTER_FINISHED_TODO}>顯示已完成</option>
+        {optionMap.map((ele) => {
+          return <option key={ele.text} value={ele.value}>顯示{ele.text}</option>;
+        })}
       </FilterSelect>
     </>
   );

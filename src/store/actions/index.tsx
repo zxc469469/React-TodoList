@@ -1,4 +1,4 @@
-import { ADD_TODO, DELETE_TODO ,FINISHED_TODO ,FILTER_FINISHED_TODO,FILTER_UNFINISHED_TODO} from '../constants/index';
+import { ADD_TODO, DELETE_TODO ,FINISHED_TODO ,FILTER_FINISHED_TODO,FILTER_UNFINISHED_TODO,FILTER_ALL_TODO} from '../constants/index';
 
 
 export interface AddToDoAction {
@@ -37,7 +37,13 @@ export interface FilterUnfinishedAction{
       filterType: string;
     };
 }
+export interface FilterAllAction{
+  type: FILTER_ALL_TODO;
+    payload: {
+      filterType: string;
+    };
+}
 
 
   export type ToDoAction = AddToDoAction |  DeleteToDoAction | FinishToDoAction ;
-  export type FilterAction = FilterFinishAction | FilterUnfinishedAction;
+  export type FilterAction = FilterFinishAction | FilterUnfinishedAction|FilterAllAction;

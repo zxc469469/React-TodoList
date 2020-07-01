@@ -1,8 +1,15 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import styled from "@emotion/styled";
+import { css } from '@emotion/core'
+
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../store/reducers/index";
 import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
+import {
+  FILTER_ALL_TODO,
+  FILTER_FINISHED_TODO,
+  FILTER_UNFINISHED_TODO,
+} from "../store/constants/index";
 import { Card, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -27,7 +34,13 @@ const device = {
   desktopL: `(max-width: ${size.desktop})`,
 };
 
-const ToDoListContainer = styled.div`
+type ToDoTextProp = {
+  isfinished: Boolean,
+};
+type ToDoListContainerProp = {
+  length: Number,
+};
+const ToDoListContainer = styled.div<ToDoListContainerProp>`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: minmax(50px, auto);
@@ -35,10 +48,17 @@ const ToDoListContainer = styled.div`
   @media ${device.tablet} {
     grid-template: 1fr /1fr 1fr;
   }
-  width: 100%;
+  width: calc(100% - 100px);
   min-height: 200px;
   padding: 50px;
   box-sizing: border-box;
+  margin: 0 50px;
+  max-height: calc(100vh - 300px);
+  overflow: scroll;
+  
+  ${props=>props.length>=1  && css`border: 2px solid #444;
+  border-radius: 5px;`}
+  
 `;
 
 const ToDoCard = styled(Card)`
@@ -52,9 +72,7 @@ const ToDoCard = styled(Card)`
   padding-bottom: 30px;
   color: #2c2c2c;
 `;
-type ToDoTextProp = {
-  isfinished: Boolean;
-};
+
 const ToDoText = styled.div<ToDoTextProp>`
   display: flex;
   height: 100%;
@@ -84,9 +102,11 @@ interface Todo {
 
 export default function DisplayToDoList() {
   const ToDoList = useSelector((state: rootState) => state.ToDoList.ToDoList);
+  const ToDoListCount = useSelector((state: rootState) => state.ToDoList.count);
   const filterType = useSelector(
     (state: rootState) => state.filterReducer.filterType
   );
+  
   const dispatch = useDispatch();
   const handleToDoDelete = (toDeleteKey: number) => {
     dispatch({ type: DELETE_TODO, payload: { toDeleteKey: toDeleteKey } });
@@ -97,24 +117,26 @@ export default function DisplayToDoList() {
   };
 
   const filter = (ToDo: Todo): boolean => {
-    console.log(filterType);
     switch (filterType) {
-      case "Finished": {
+      case FILTER_FINISHED_TODO: {
         if (ToDo.finished === true) return true;
         else return false;
       }
-      case "UnFinished": {
+      case FILTER_UNFINISHED_TODO: {
         if (ToDo.finished === false) return true;
         else return false;
+      }
+      case FILTER_ALL_TODO: {
+        return true;
       }
       default:
         return false;
     }
   };
 
+  
   return (
-    <ToDoListContainer>
-      {console.log(ToDoList)}
+    <ToDoListContainer length={ToDoListCount } >
       {ToDoList.map((ele: Todo, i) => {
         if (filter(ele) && i >= 1)
           return (

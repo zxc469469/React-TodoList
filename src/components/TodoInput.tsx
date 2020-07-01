@@ -12,7 +12,7 @@ const ToDoInputContainer = styled.div`
   align-items: center;
   flex-direction: column;
   height: 100px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 `;
 const ToDoListInput = styled(OutlinedInput)`
   width: 30%;

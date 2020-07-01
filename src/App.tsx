@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import ToDoInput from "./components/ToDoInput";
 import ToDoList from "./components/ToDoList";
 import ToDoFilter from "./components/ToDoFilter";
@@ -23,21 +23,22 @@ const InputContainer = styled.div`
   height: 300px;
 `;
 
+
 function App() {
   const ToDoListCount = useSelector((state: rootState) => state.ToDoList).count;
   const allToDoList = useSelector((state: rootState) => state.ToDoList).ToDoList;
   const [remainToDo, setRemainToDo] = useState(0);
   const [finishedCount, setFinishedCount] = useState(0);
-  let isFinishToDoCount = 0;
+  const isFinishToDoCount = useRef(0);
 
   useEffect(() => {
-    isFinishToDoCount = allToDoList.filter((ele) => {
+    isFinishToDoCount.current = allToDoList.filter((ele) => {
       return ele.finished === true;
     }).length;
-    setFinishedCount(isFinishToDoCount);
+    setFinishedCount(isFinishToDoCount.current);
     console.log(isFinishToDoCount);
-    setRemainToDo(ToDoListCount - isFinishToDoCount);
-  }, [allToDoList]);
+    setRemainToDo(ToDoListCount - isFinishToDoCount.current);
+  },[ToDoListCount,allToDoList]);
   return (
     <div className="App">
       <InputContainer>
@@ -47,8 +48,8 @@ function App() {
           {`已完成${finishedCount}`}
         </ToDoTitle>
         <ToDoInput />
-      </InputContainer>
         <ToDoFilter />
+      </InputContainer>
 
       <ToDoList />
     </div>
