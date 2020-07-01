@@ -2,7 +2,7 @@ import { FILTER_FINISHED_TODO ,FILTER_UNFINISHED_TODO} from "../constants/index"
 import { FilterAction } from "../actions/index";
 
 const FilterInitState = {
-  filterType: "null",
+  filterType: "UnFinished",
 };
 interface FilterInitState {
   filterType: string;

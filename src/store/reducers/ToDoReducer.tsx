@@ -34,18 +34,17 @@ const ToDoReducer = (state = initState, action: ToDoAction): initState => {
     }
     case FINISHED_TODO: {
       const cloneToDo = state.ToDoList.slice();
-      cloneToDo[action.payload.toFinishKey].finished =
-      ! cloneToDo[action.payload.toFinishKey].finished;
+      cloneToDo[action.payload.toFinishKey].finished = !cloneToDo[
+        action.payload.toFinishKey
+      ].finished;
       return {
         ...state,
-        ToDoList:cloneToDo,
+        ToDoList: cloneToDo,
       };
     }
     default:
       return state;
   }
 };
-
-
 
 export default ToDoReducer;

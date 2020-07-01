@@ -14,6 +14,7 @@ const ToDoTitle = styled.div`
   align-items: center;
   margin-bottom: 30px;
 `;
+
 const InputContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -21,6 +22,7 @@ const InputContainer = styled.div`
   flex-direction: column;
   height: 300px;
 `;
+
 function App() {
   const ToDoListCount = useSelector((state: rootState) => state.ToDoList).count;
   const allToDoList = useSelector((state: rootState) => state.ToDoList).ToDoList;
