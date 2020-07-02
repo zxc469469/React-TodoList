@@ -54,7 +54,7 @@ const ToDoListContainer = styled.div<ToDoListContainerProp>`
   ${(props) =>
     props.length >= 1 &&
     css`
-      border: 2px solid #444;
+      background-color:#f1f1f1;
       border-radius: 5px;
     `}
 `;
