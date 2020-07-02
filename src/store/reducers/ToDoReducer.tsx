@@ -24,8 +24,10 @@ const ToDoReducer = (state = initState, action: ToDoAction): initState => {
       });
     }
     case DELETE_TODO: {
-      const cloneToDo = state.ToDoList.slice();
-      cloneToDo.splice(action.payload.toDeleteKey, 1);
+      const cloneToDo = state.ToDoList.slice().filter(
+        (ele) => ele.key !== action.payload.toDeleteKey
+      );
+
       return {
         ...state,
         ToDoList: cloneToDo,
@@ -33,16 +35,19 @@ const ToDoReducer = (state = initState, action: ToDoAction): initState => {
       };
     }
     case FINISHED_TODO: {
-      const cloneToDo = state.ToDoList.slice();
-      cloneToDo[action.payload.toFinishKey].finished = !cloneToDo[
-        action.payload.toFinishKey
-      ].finished;
+      const cloneToDo = state.ToDoList.slice().map((ele)=>{
+        if(ele.key===action.payload.toFinishKey){
+          ele.finished = !ele.finished
+        }
+        return ele
+      });
+      
       return {
         ...state,
         ToDoList: cloneToDo,
       };
     }
-  
+
     default:
       return state;
   }

@@ -51,6 +51,7 @@ export default function ToDoInput() {
         type="text"
         value={state.name}
         onChange={(e) => setState({ key: state.key, name: e.target.value })}
+        onKeyDown={(e)=>e.key==='Enter' ? addToDo() :""}
       />
       <NewToDoBtn variant="contained" color="primary"
        onClick={addToDo}>新增ToDo</NewToDoBtn>

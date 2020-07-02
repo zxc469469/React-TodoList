@@ -1,17 +1,12 @@
-import React,{useState, useEffect,useRef} from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import { css } from '@emotion/core'
-
+import { css } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../store/reducers/index";
 import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
-import {
-  FILTER_ALL_TODO,
-  FILTER_FINISHED_TODO,
-  FILTER_UNFINISHED_TODO,
-} from "../store/constants/index";
 import { Card, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import useFilter from "../hooks/useFilter";
 
 const size = {
   mobileS: "320px",
@@ -35,10 +30,10 @@ const device = {
 };
 
 type ToDoTextProp = {
-  isfinished: Boolean,
+  isfinished: Boolean;
 };
 type ToDoListContainerProp = {
-  length: Number,
+  length: Number;
 };
 const ToDoListContainer = styled.div<ToDoListContainerProp>`
   display: grid;
@@ -55,10 +50,13 @@ const ToDoListContainer = styled.div<ToDoListContainerProp>`
   margin: 0 50px;
   max-height: calc(100vh - 300px);
   overflow: scroll;
-  
-  ${props=>props.length>=1  && css`border: 2px solid #444;
-  border-radius: 5px;`}
-  
+
+  ${(props) =>
+    props.length >= 1 &&
+    css`
+      border: 2px solid #444;
+      border-radius: 5px;
+    `}
 `;
 
 const ToDoCard = styled(Card)`
@@ -102,12 +100,12 @@ interface Todo {
 
 export default function DisplayToDoList() {
   const ToDoList = useSelector((state: rootState) => state.ToDoList.ToDoList);
-  const ToDoListCount = useSelector((state: rootState) => state.ToDoList.count);
   const filterType = useSelector(
     (state: rootState) => state.filterReducer.filterType
   );
-  const [thisTypeCounts,setThisTypeCounts] = useState(0);
   const dispatch = useDispatch();
+  const filteredToDoList = useFilter(ToDoList, filterType);
+
   const handleToDoDelete = (toDeleteKey: number) => {
     dispatch({ type: DELETE_TODO, payload: { toDeleteKey: toDeleteKey } });
   };
@@ -116,56 +114,32 @@ export default function DisplayToDoList() {
     dispatch({ type: FINISHED_TODO, payload: { toFinishKey: toFinishKey } });
   };
 
-  const filter = (ToDo: Todo): boolean => {
-    switch (filterType) {
-      case FILTER_FINISHED_TODO: {
-        if (ToDo.finished === true) return true;
-        else return false;
-      }
-      case FILTER_UNFINISHED_TODO: {
-        if (ToDo.finished === false) return true;
-        else return false;
-      }
-      case FILTER_ALL_TODO: {
-        return true;
-      }
-      default:
-        return false;
-    }
-  };
-useEffect(() => {
-  console.log(thisTypeCounts,ToDoList.filter(ele=>filter(ele)===true).length,filterType);
-  setThisTypeCounts(ToDoList.filter(ele=>filter(ele)===true).length)
-}, [ToDoListCount,ToDoList])
-  
   return (
-    <ToDoListContainer length={thisTypeCounts } >
-      {ToDoList.map((ele: Todo, i) => {
-        if (filter(ele) && i >= 1)
-          return (
-            <ToDoCard key={ele.key}>
-              <ToDoTextTitle>第{i}項：</ToDoTextTitle>
-              <ToDoText
-                isfinished={ele.finished}
-                onClick={() => {
-                  handleToDoFinished(i);
-                }}
-                data-testid={ele.key}
-              >
-                {ele.name}
-              </ToDoText>
-              <ToDoDeleteBtn
-                variant="contained"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => {
-                  handleToDoDelete(i);
-                }}
-              >
-                刪除
-              </ToDoDeleteBtn>
-            </ToDoCard>
-          );
+    <ToDoListContainer length={filteredToDoList.length}>
+      {filteredToDoList.map((ele: Todo) => {
+        return (
+          <ToDoCard
+            key={ele.key}
+            onClick={() => {
+              handleToDoFinished(ele.key);
+            }}
+          >
+            <ToDoTextTitle>第{ele.key}項：</ToDoTextTitle>
+            <ToDoText isfinished={ele.finished} data-testid={ele.key}>
+              {ele.name}
+            </ToDoText>
+            <ToDoDeleteBtn
+              variant="contained"
+              color="secondary"
+              startIcon={<DeleteIcon />}
+              onClick={() => {
+                handleToDoDelete(ele.key);
+              }}
+            >
+              刪除
+            </ToDoDeleteBtn>
+          </ToDoCard>
+        );
       })}
     </ToDoListContainer>
   );

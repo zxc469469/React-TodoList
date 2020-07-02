@@ -1,5 +1,4 @@
-
-import {Todo} from '../type';
+import {Todo,ToDoLists} from '../type';
 import {
     FILTER_FINISHED_TODO,
     FILTER_UNFINISHED_TODO,
@@ -7,22 +6,18 @@ import {
   } from "../store/constants/index";
   
 
-const useFilter = (ToDo: Todo,filterType:string): boolean => {
-    switch (filterType) {
-      case FILTER_FINISHED_TODO: {
-        if (ToDo.finished === true) return true;
-        else return false;
-      }
-      case FILTER_UNFINISHED_TODO: {
-        if (ToDo.finished === false) return true;
-        else return false;
-      }
-      case FILTER_ALL_TODO: {
-        return true;
-      }
-      default:
-        return false;
+const useFilterCounter = (allToDoLists: ToDoLists,filterType:string): ToDoLists => {
+  
+  const filterTodo =  allToDoLists.filter((ele:Todo) => {
+    if(filterType===FILTER_FINISHED_TODO){
+      return ele.finished === true
+    } else if (filterType===FILTER_UNFINISHED_TODO){
+      return ele.finished===false
+    }else if(filterType===FILTER_ALL_TODO){
+      return ele
     }
+  })
+  return filterTodo
   };
 
-  export default useFilter
+  export default useFilterCounter
