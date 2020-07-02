@@ -1,29 +1,49 @@
-import { ADD_TODO, DELETE_TODO ,FINISHED_TODO } from '../constants/index';
+import { ADD_TODO, DELETE_TODO ,FINISHED_TODO ,FILTER_FINISHED_TODO,FILTER_UNFINISHED_TODO,FILTER_ALL_TODO} from '../constants/index';
 
 
-export interface AddTodoAction {
+export interface AddToDoAction {
         type: ADD_TODO;
         payload: {
-          TodoList: {
+          ToDoList: {
             name: string;
             key: number;
           };
         };
 }
     
-
-export interface  DeleteTodoAction{
+export interface  DeleteToDoAction{
     type: DELETE_TODO;
     payload: {
       toDeleteKey: number;
     };
   }
 
-export interface FinishTodoAction{
+export interface FinishToDoAction{
   type: FINISHED_TODO;
     payload: {
       toFinishKey: number;
     };
 }
+export interface FilterFinishAction{
+  type: FILTER_FINISHED_TODO;
+    payload: {
+      filterType: string;
+    };
+}
 
-  export type TodoAction = AddTodoAction |  DeleteTodoAction|FinishTodoAction ;
+export interface FilterUnfinishedAction{
+  type: FILTER_UNFINISHED_TODO;
+    payload: {
+      filterType: string;
+    };
+}
+export interface FilterAllAction{
+  type: FILTER_ALL_TODO;
+    payload: {
+      filterType: string;
+    };
+}
+
+
+  export type ToDoAction = AddToDoAction |  DeleteToDoAction | FinishToDoAction ;
+  export type FilterAction = FilterFinishAction | FilterUnfinishedAction|FilterAllAction;
