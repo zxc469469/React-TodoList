@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect,useRef} from "react";
 import styled from "@emotion/styled";
 import { css } from '@emotion/core'
 
@@ -106,7 +106,7 @@ export default function DisplayToDoList() {
   const filterType = useSelector(
     (state: rootState) => state.filterReducer.filterType
   );
-  
+  const [thisTypeCounts,setThisTypeCounts] = useState(0);
   const dispatch = useDispatch();
   const handleToDoDelete = (toDeleteKey: number) => {
     dispatch({ type: DELETE_TODO, payload: { toDeleteKey: toDeleteKey } });
@@ -133,10 +133,13 @@ export default function DisplayToDoList() {
         return false;
     }
   };
-
+useEffect(() => {
+  console.log(thisTypeCounts,ToDoList.filter(ele=>filter(ele)===true).length,filterType);
+  setThisTypeCounts(ToDoList.filter(ele=>filter(ele)===true).length)
+}, [ToDoListCount,ToDoList])
   
   return (
-    <ToDoListContainer length={ToDoListCount } >
+    <ToDoListContainer length={thisTypeCounts } >
       {ToDoList.map((ele: Todo, i) => {
         if (filter(ele) && i >= 1)
           return (

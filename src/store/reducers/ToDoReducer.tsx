@@ -42,6 +42,7 @@ const ToDoReducer = (state = initState, action: ToDoAction): initState => {
         ToDoList: cloneToDo,
       };
     }
+  
     default:
       return state;
   }

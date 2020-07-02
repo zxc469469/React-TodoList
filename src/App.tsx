@@ -3,7 +3,6 @@ import ToDoInput from "./components/ToDoInput";
 import ToDoList from "./components/ToDoList";
 import ToDoFilter from "./components/ToDoFilter";
 import { useSelector } from "react-redux";
-import { initState } from "./store/reducers/ToDoReducer";
 import { rootState } from "./store/reducers/index";
 import styled from "@emotion/styled";
 import "./App.css";
@@ -36,7 +35,6 @@ function App() {
       return ele.finished === true;
     }).length;
     setFinishedCount(isFinishToDoCount.current);
-    console.log(isFinishToDoCount);
     setRemainToDo(ToDoListCount - isFinishToDoCount.current);
   },[ToDoListCount,allToDoList]);
   return (
