@@ -37,8 +37,24 @@ function App() {
     setFinishedCount(isFinishToDoCount.current);
     setRemainToDo(ToDoListCount - isFinishToDoCount.current);
   },[ToDoListCount,allToDoList]);
+
+  useEffect(()=>{
+    // fetch("http://localhost:9010/ToDoApi/contacts")
+    // .then(res=>res.text())
+    // .then(res=>console.log(res))
+
+    fetch("http://localhost:9010/ToDoApi/contacts",{
+      body: JSON.stringify({name:"test",email:"test@test.com"}),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+        },
+      method: 'POST', 
+      mode: 'cors', 
+    }).then(res=>res.text())
+    .then(res=>console.log(res))
+  },[])
   return (
-    <div className="App">
+    <div className="App" data-testid={"App"}>
       <InputContainer>
         <ToDoTitle>
           {"ToDoList"}
