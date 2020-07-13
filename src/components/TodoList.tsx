@@ -7,6 +7,7 @@ import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
 import { Card, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useFilter from "../hooks/useFilter";
+import {deleteToDoApi} from "../common/utility"
 
 const size = {
   mobileS: "320px",
@@ -116,7 +117,7 @@ export default function DisplayToDoList() {
 
   return (
     <ToDoListContainer length={filteredToDoList.length}>
-      {filteredToDoList.map((ele: Todo) => {
+      {filteredToDoList.map((ele: Todo,index) => {
         return (
           <ToDoCard
             key={ele.key}
@@ -124,7 +125,7 @@ export default function DisplayToDoList() {
               handleToDoFinished(ele.key);
             }}
           >
-            <ToDoTextTitle>第{ele.key}項：</ToDoTextTitle>
+            <ToDoTextTitle>第{index}項：</ToDoTextTitle>
             <ToDoText isfinished={ele.finished} data-testid={ele.key}>
               {ele.name}
             </ToDoText>
@@ -134,6 +135,7 @@ export default function DisplayToDoList() {
               startIcon={<DeleteIcon />}
               onClick={() => {
                 handleToDoDelete(ele.key);
+                deleteToDoApi(`http://localhost:9010/ToDoApi/key/${ele.key}`)
               }}
             >
               刪除

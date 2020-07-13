@@ -18,7 +18,7 @@ const ToDoReducer = (state = initState, action: ToDoAction): initState => {
         ToDoList: state.ToDoList.concat({
           name: action.payload.ToDoList.name,
           key: action.payload.ToDoList.key,
-          finished: false,
+          finished: action.payload.ToDoList.finished||false,
         }),
         count: state.ToDoList.length,
       });

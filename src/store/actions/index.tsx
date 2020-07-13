@@ -7,6 +7,7 @@ export interface AddToDoAction {
           ToDoList: {
             name: string;
             key: number;
+            finished?:boolean
           };
         };
 }

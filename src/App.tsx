@@ -2,6 +2,9 @@ import React, { useEffect, useState,useRef } from "react";
 import ToDoInput from "./components/ToDoInput";
 import ToDoList from "./components/ToDoList";
 import ToDoFilter from "./components/ToDoFilter";
+import {fetchApi} from "./common/utility";
+import { ADD_TODO } from "./store/constants/index";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { rootState } from "./store/reducers/index";
 import styled from "@emotion/styled";
@@ -29,7 +32,11 @@ function App() {
   const [remainToDo, setRemainToDo] = useState(0);
   const [finishedCount, setFinishedCount] = useState(0);
   const isFinishToDoCount = useRef(0);
-
+  const dispatch = useDispatch()
+  useEffect(()=>{
+  
+    
+  },[])
   useEffect(() => {
     isFinishToDoCount.current = allToDoList.filter((ele) => {
       return ele.finished === true;
@@ -38,21 +45,8 @@ function App() {
     setRemainToDo(ToDoListCount - isFinishToDoCount.current);
   },[ToDoListCount,allToDoList]);
 
-  useEffect(()=>{
-    // fetch("http://localhost:9010/ToDoApi/contacts")
-    // .then(res=>res.text())
-    // .then(res=>console.log(res))
-
-    fetch("http://localhost:9010/ToDoApi/contacts",{
-      body: JSON.stringify({name:"test",email:"test@test.com"}),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-        },
-      method: 'POST', 
-      mode: 'cors', 
-    }).then(res=>res.text())
-    .then(res=>console.log(res))
-  },[])
+ 
+  
   return (
     <div className="App" data-testid={"App"}>
       <InputContainer>
