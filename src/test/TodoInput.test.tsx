@@ -5,13 +5,28 @@ import ToDoListInput from "../components/ToDoInput";
 import reducer from "../store/reducers/ToDoReducer";
 import { Provider } from "react-redux";
 import store from "../store/store";
-import { ADD_TODO, DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
+import {
+  ADD_TODO,
+  DELETE_TODO,
+  FINISHED_TODO,
+  UPDATE_TODO,
+  SORT_TODO,
+} from "../store/constants/index";
 
 expect.extend({ toBeInTheDocument });
 
 const testInItTodo = {
   ToDoList: [{ name: "test1", key: 1, finished: false }],
   count: 1,
+};
+
+const testSortTodo = {
+  ToDoList: [
+    { name: "test1", key: 1, finished: false },
+    { name: "test2", key: 10, finished: false },
+    { name: "test3", key: 11, finished: false },
+  ],
+  count: 3,
 };
 
 test("renders initState", () => {
@@ -33,7 +48,6 @@ test("renders initState", () => {
 // })
 
 test("dispatch ADD ", () => {
-
   expect(
     reducer(testInItTodo, {
       type: ADD_TODO,
@@ -50,20 +64,16 @@ test("dispatch ADD ", () => {
   });
 });
 
-
-
 test("dispatch DELETE ", () => {
   expect(
     reducer(testInItTodo, {
       type: DELETE_TODO,
       payload: {
-        toDeleteKey: 1 ,
+        toDeleteKey: 1,
       },
     })
   ).toEqual({
-    ToDoList: [
-    
-    ],
+    ToDoList: [],
     count: -1,
   });
 });
@@ -73,7 +83,7 @@ test("dispatch DELETE ", () => {
     reducer(testInItTodo, {
       type: FINISHED_TODO,
       payload: {
-        toFinishKey: 1 ,
+        toFinishKey: 1,
       },
     })
   ).toEqual({
@@ -82,3 +92,31 @@ test("dispatch DELETE ", () => {
   });
 });
 
+test("dispatch UPDATE_TODO ", () => {
+  expect(
+    reducer(testInItTodo, {
+      type: UPDATE_TODO,
+      payload: {
+        ToDoList: { name: "TestNew", key: 1, finished: false },
+      },
+    })
+  ).toEqual({
+    ToDoList: [{ name: "TestNew", key: 1, finished: false }],
+    count: 1,
+  });
+});
+
+test("dispatch SORT_TODO ", () => {
+  expect(
+    reducer(testSortTodo, {
+      type: SORT_TODO,
+    })
+  ).toEqual({
+    ToDoList: [
+      { name: "test1", key: 1, finished: false },
+      { name: "test2", key: 2, finished: false },
+      { name: "test3", key: 3, finished: false },
+    ],
+    count: 3,
+  });
+});

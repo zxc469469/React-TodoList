@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../store/reducers/index";
-import { DELETE_TODO, FINISHED_TODO } from "../store/constants/index";
+import {
+  DELETE_TODO,
+  FINISHED_TODO,
+  SORT_TODO,
+} from "../store/constants/index";
 import { Card, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useFilter from "../hooks/useFilter";
-import {deleteToDoApi} from "../common/utility"
+import { deleteToDoApi } from "../common/utility";
 
 const size = {
   mobileS: "320px",
@@ -55,7 +59,7 @@ const ToDoListContainer = styled.div<ToDoListContainerProp>`
   ${(props) =>
     props.length >= 1 &&
     css`
-      background-color:#f1f1f1;
+      background-color: #f1f1f1;
       border-radius: 5px;
     `}
 `;
@@ -101,6 +105,8 @@ interface Todo {
 
 export default function DisplayToDoList() {
   const ToDoList = useSelector((state: rootState) => state.ToDoList.ToDoList);
+  const lastKey = ToDoList.slice(-1)[0].key;
+
   const filterType = useSelector(
     (state: rootState) => state.filterReducer.filterType
   );
@@ -116,32 +122,35 @@ export default function DisplayToDoList() {
   };
 
   return (
-    <ToDoListContainer length={filteredToDoList.length}>
-      {filteredToDoList.map((ele: Todo,index) => {
-        return (
-          <ToDoCard
-            key={ele.key}
-            onClick={() => {
-              handleToDoFinished(ele.key);
-            }}
-          >
-            <ToDoTextTitle>第{index}項：</ToDoTextTitle>
-            <ToDoText isfinished={ele.finished} data-testid={ele.key}>
-              {ele.name}
-            </ToDoText>
-            <ToDoDeleteBtn
-              variant="contained"
-              color="secondary"
-              startIcon={<DeleteIcon />}
+    <ToDoListContainer length={filteredToDoList.filter(ele=>ele.key>=1).length}>
+      {filteredToDoList.map((ele: Todo, index) => {
+        if (index > 0)
+          return (
+            <ToDoCard
+              key={ele.key}
               onClick={() => {
-                handleToDoDelete(ele.key);
-                deleteToDoApi(`http://localhost:9010/ToDoApi/key/${ele.key}`)
+                handleToDoFinished(ele.key);
               }}
             >
-              刪除
-            </ToDoDeleteBtn>
-          </ToDoCard>
-        );
+              <ToDoTextTitle>
+                第{index}項：{ele.key}
+              </ToDoTextTitle>
+              <ToDoText isfinished={ele.finished} data-testid={ele.key}>
+                {ele.name}
+              </ToDoText>
+              <ToDoDeleteBtn
+                variant="contained"
+                color="secondary"
+                startIcon={<DeleteIcon />}
+                onClick={() => {
+                  handleToDoDelete(ele.key);
+                  deleteToDoApi(`http://localhost:9010/ToDoApi/key/${ele.key}`);
+                }}
+              >
+                刪除
+              </ToDoDeleteBtn>
+            </ToDoCard>
+          );
       })}
     </ToDoListContainer>
   );

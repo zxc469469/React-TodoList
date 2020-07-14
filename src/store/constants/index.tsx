@@ -12,6 +12,13 @@ export type EDIT_TODO = typeof EDIT_TODO;
 export const DELETE_TODO = "DELETE_TODO";
 export type DELETE_TODO = typeof DELETE_TODO;
 
+export const UPDATE_TODO = "UPDATE_TODO";
+export type UPDATE_TODO = typeof UPDATE_TODO;
+
+export const SORT_TODO = "SORT_TODO";
+export type SORT_TODO = typeof SORT_TODO;
+
+
 // Filter Action type
 
 export const FILTER_FINISHED_TODO = "FILTER_FINSHED_TODOS";

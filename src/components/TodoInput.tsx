@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { rootState } from "../store/reducers/index";
-import { ADD_TODO } from "../store/constants/index";
+import { ADD_TODO ,SORT_TODO} from "../store/constants/index";
 import styled from "@emotion/styled";
 import {OutlinedInput , Button} from '@material-ui/core';
 import {addToDoApi} from "../common/utility"
@@ -30,12 +30,13 @@ const NewToDoBtn = styled(Button)`
 `;
 
 export default function ToDoInput() {
+  const ToDoListCount = useSelector((state: rootState) => state.ToDoList).count;
   const lastKey = useSelector((state: rootState) => state.ToDoList).ToDoList.slice(-1)[0].key
   const dispatch = useDispatch();
   const [state, setState] = useState({ name: "", key: 1 });
   const addToDo = () => {
     if (state.name) {
-      console.log(state.key);
+      
       const data = { name: state.name, key: state.key }
       dispatch({
         type: ADD_TODO,
@@ -43,18 +44,14 @@ export default function ToDoInput() {
           ToDoList: data,
         },
       });
-      
-      setState({ key: state.key + 1, name: "" });
-      console.log(data);
+      setState({ ...state, name: "" });
       addToDoApi("http://localhost:9010/ToDoApi/key",{...data,finished:false})
-      
     }
   };
 
   useEffect(() => {
     setState({...state,key:lastKey+1})
-    console.log(lastKey);
-  }, [lastKey])
+  }, [ToDoListCount])
 
   return (
     <ToDoInputContainer>
@@ -67,7 +64,7 @@ export default function ToDoInput() {
         onKeyDown={(e)=>e.key==='Enter' ? addToDo() :""}
       />
       <NewToDoBtn variant="contained" color="primary"
-       onClick={addToDo}>新增ToDo</NewToDoBtn>
+       onClick={addToDo}>新增ToDo{state.key}</NewToDoBtn>
     </ToDoInputContainer>
   );
 }

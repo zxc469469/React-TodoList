@@ -1,8 +1,8 @@
-import { ADD_TODO, DELETE_TODO, FINISHED_TODO } from "../constants/index";
+import { ADD_TODO, DELETE_TODO, FINISHED_TODO,UPDATE_TODO ,SORT_TODO} from "../constants/index";
 import { ToDoAction } from "../actions/index";
 
 export interface initState {
-  ToDoList: { name: string; key: number; finished: boolean }[];
+  ToDoList: { name: string; key: number; finished: boolean ,isInit?: boolean }[];
   count: number;
 }
 
@@ -11,7 +11,7 @@ const initState = {
   count: 0,
 };
 
-const ToDoReducer = (state = initState, action: ToDoAction): initState => {
+const ToDoReducer = (state:initState|undefined = initState, action: ToDoAction): initState => {
   switch (action.type) {
     case ADD_TODO: {
       return Object.assign({}, state, {
@@ -42,6 +42,28 @@ const ToDoReducer = (state = initState, action: ToDoAction): initState => {
         return ele
       });
       
+      return {
+        ...state,
+        ToDoList: cloneToDo,
+      };
+    }
+    case UPDATE_TODO: {
+      state.ToDoList.map(ele=>{
+        if(ele.key===action.payload.ToDoList.key)
+        ele.name=action.payload.ToDoList.name;
+        ele.finished=action.payload.ToDoList.finished||false;
+      })
+      const cloneToDo = state.ToDoList.slice()
+      
+      return {
+        ...state,
+        ToDoList: cloneToDo,
+      };
+    }
+
+    case SORT_TODO: {
+      const cloneToDo = state.ToDoList.slice()
+      cloneToDo.forEach((ele,i)=>ele.key=i+1)
       return {
         ...state,
         ToDoList: cloneToDo,
