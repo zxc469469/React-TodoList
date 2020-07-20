@@ -48,6 +48,21 @@ export default function ToDoInput() {
       addToDoApi("http://localhost:9010/ToDoApi/key",{...data,finished:false})
     }
   };
+  const addTaskAsync = ()=>{
+    console.log("1");
+    return (dispatch:any) => {
+      console.log(dispatch,"123");
+      setTimeout(() => {
+        dispatch({
+          type: ADD_TODO,
+          payload: {
+            ToDoList: {name:state.name,key:state.key},
+          }});
+          setState({ ...state, name: "" });
+
+      }, 1000);
+    };
+  }
 
   useEffect(() => {
     setState({...state,key:lastKey+1})
@@ -64,7 +79,7 @@ export default function ToDoInput() {
         onKeyDown={(e)=>e.key==='Enter' ? addToDo() :""}
       />
       <NewToDoBtn variant="contained" color="primary"
-       onClick={addToDo}>新增ToDo{state.key}</NewToDoBtn>
+       onClick={()=>{dispatch(addTaskAsync())}}>新增ToDo{state.key}</NewToDoBtn>
     </ToDoInputContainer>
   );
 }
