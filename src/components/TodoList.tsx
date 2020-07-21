@@ -54,7 +54,7 @@ const ToDoListContainer = styled.div<ToDoListContainerProp>`
   box-sizing: border-box;
   margin: 0 50px;
   max-height: calc(100vh - 300px);
-  overflow: scroll;
+  overflow: auto;
 
   ${(props) =>
     props.length >= 1 &&

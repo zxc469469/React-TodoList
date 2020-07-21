@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { rootState } from "../store/reducers/index";
-import { ADD_TODO ,SORT_TODO} from "../store/constants/index";
+import { ADD_TODO, SORT_TODO } from "../store/constants/index";
 import styled from "@emotion/styled";
-import {OutlinedInput , Button} from '@material-ui/core';
-import {addToDoApi} from "../common/utility"
+import { OutlinedInput, Button } from "@material-ui/core";
+import { addToDoApi } from "../common/utility";
 
 const ToDoInputContainer = styled.div`
   display: flex;
@@ -31,55 +31,60 @@ const NewToDoBtn = styled(Button)`
 
 export default function ToDoInput() {
   const ToDoListCount = useSelector((state: rootState) => state.ToDoList).count;
-  const lastKey = useSelector((state: rootState) => state.ToDoList).ToDoList.slice(-1)[0].key
+  const lastKey = useSelector(
+    (state: rootState) => state.ToDoList
+  ).ToDoList.slice(-1)[0].key;
   const dispatch = useDispatch();
   const [state, setState] = useState({ name: "", key: 1 });
+
+  const addAction = () => {
+    const data = { name: state.name, key: state.key };
+    return {
+      type: ADD_TODO,
+      payload: {
+        ToDoList: data,
+      },
+    };
+  };
+
   const addToDo = () => {
     if (state.name) {
-      
-      const data = { name: state.name, key: state.key }
-      dispatch({
-        type: ADD_TODO,
-        payload: {
-          ToDoList: data,
-        },
-      });
+      dispatch(addAction());
       setState({ ...state, name: "" });
-      addToDoApi("http://localhost:9010/ToDoApi/key",{...data,finished:false})
+      
     }
   };
-  const addTaskAsync = ()=>{
-    console.log("1");
-    return (dispatch:any) => {
-      console.log(dispatch,"123");
+  const addTaskAsync = () => {
+    return (dispatch: any) => {
       setTimeout(() => {
-        dispatch({
-          type: ADD_TODO,
-          payload: {
-            ToDoList: {name:state.name,key:state.key},
-          }});
-          setState({ ...state, name: "" });
-
+        dispatch(addAction());
       }, 1000);
+      setState({ ...state, name: "" });
     };
-  }
+  };
 
   useEffect(() => {
-    setState({...state,key:lastKey+1})
-  }, [ToDoListCount])
+    setState({ ...state, key: lastKey + 1 });
+  }, [ToDoListCount]);
 
   return (
     <ToDoInputContainer>
       <ToDoListInput
-        
         data-testid="Input"
         type="text"
         value={state.name}
         onChange={(e) => setState({ key: state.key, name: e.target.value })}
-        onKeyDown={(e)=>e.key==='Enter' ? addToDo() :""}
+        onKeyDown={(e) => (e.key === "Enter" ? addToDo() : "")}
       />
-      <NewToDoBtn variant="contained" color="primary"
-       onClick={()=>{dispatch(addTaskAsync())}}>新增ToDo{state.key}</NewToDoBtn>
+      <NewToDoBtn
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          dispatch(addTaskAsync());
+        }}
+      >
+        新增ToDo{state.key}
+      </NewToDoBtn>
     </ToDoInputContainer>
   );
 }
