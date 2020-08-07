@@ -83,7 +83,7 @@ export default function ToDoInput() {
           dispatch(addTaskAsync());
         }}
       >
-        新增ToDo{state.key}
+        新增ToDo
       </NewToDoBtn>
     </ToDoInputContainer>
   );

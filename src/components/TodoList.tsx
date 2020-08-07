@@ -112,7 +112,7 @@ export default function DisplayToDoList() {
   );
   const dispatch = useDispatch();
   const filteredToDoList = useFilter(ToDoList, filterType);
-
+  console.log(filteredToDoList)
   const handleToDoDelete = (toDeleteKey: number) => {
     dispatch({ type: DELETE_TODO, payload: { toDeleteKey: toDeleteKey } });
   };
@@ -122,9 +122,9 @@ export default function DisplayToDoList() {
   };
 
   return (
-    <ToDoListContainer length={filteredToDoList.filter(ele=>ele.key>=1).length}>
+    <ToDoListContainer length={filteredToDoList.length}>
       {filteredToDoList.map((ele: Todo, index) => {
-        if (index > 0)
+        
           return (
             <ToDoCard
               key={ele.key}
@@ -133,7 +133,7 @@ export default function DisplayToDoList() {
               }}
             >
               <ToDoTextTitle>
-                第{index}項：{ele.key}
+                第{index + 1}項：
               </ToDoTextTitle>
               <ToDoText isfinished={ele.finished} data-testid={ele.key}>
                 {ele.name}
